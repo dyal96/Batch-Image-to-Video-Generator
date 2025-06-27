@@ -23,7 +23,7 @@ No software installation required — just FFmpeg and Windows.
 ### 📦 Requirements
 
 * Windows
-* [[FFmpeg](https://ffmpeg.org/download.html)](https://ffmpeg.org/download.html) — Place `ffmpeg.exe` in the same folder as the `.bat` file.
+* [FFmpeg](https://ffmpeg.org/download.html) — Place `ffmpeg.exe` in the same folder as the `.bat` file.
 
 ---
 
