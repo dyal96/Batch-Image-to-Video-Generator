@@ -5,7 +5,7 @@ setlocal EnableDelayedExpansion
 set duration=5
 set fade_duration=1
 set fps=24
-set bitrate=5000k
+set bitrate=1000k
 
 :: ==== CHOOSE ORIENTATION ====
 :choose_resolution
@@ -27,6 +27,18 @@ if "%resChoice%"=="1" (
 ) else (
     echo Invalid choice. Try again.
     goto choose_resolution
+)
+
+:: ==== CHOOSE STRETCH OPTION ====
+echo.
+echo Stretch images to fill the resolution (may distort aspect ratio)?
+echo [2] No (default, fit with padding)
+echo [1] Yes (stretch to fill)
+set /p stretchChoice="Enter choice [1 or 2]: "
+if "%stretchChoice%"=="2" (
+    set "stretch=false"
+) else (
+    set "stretch=true"
 )
 
 :: ==== CHOOSE FORMAT ====
@@ -92,7 +104,13 @@ set j=0
 :generate_clips
 if !j! GEQ %count% goto combine_clips
 
-"%~dp0ffmpeg.exe" -y -loop 1 -t %duration% -i "img!j!.jpg" -vf "scale=%resolution%:force_original_aspect_ratio=decrease,pad=%resolution%:(ow-iw)/2:(oh-ih)/2:color=black,setsar=1,format=yuv420p" -r %fps% -c:v %vcodec% -b:v %bitrate% -preset veryfast -t %duration% "clip!j!.mp4"
+if "!stretch!"=="true" (
+    set "scalefilter=scale=%resolution%,setsar=1,format=yuv420p"
+) else (
+    set "scalefilter=scale=%resolution%:force_original_aspect_ratio=decrease,pad=%resolution%:(ow-iw)/2:(oh-ih)/2:color=black,setsar=1,format=yuv420p"
+)
+
+"%~dp0ffmpeg.exe" -y -loop 1 -t %duration% -i "img!j!.jpg" -vf "!scalefilter!" -r %fps% -c:v %vcodec% -b:v %bitrate% -preset veryfast -t %duration% "clip!j!.mp4"
 echo Created: clip!j!.mp4
 set /a j+=1
 goto generate_clips
@@ -136,7 +154,6 @@ cmd /V /C ""%~dp0ffmpeg.exe"!inputs! -f lavfi -t %total_duration% -i anullsrc=r=
 echo.
 echo ✅ Done! Saved to:
 echo "%outputdir%\%outputname%"
-
 
 :: ==== CLEANUP ====
 cd /d "%~dp0"
