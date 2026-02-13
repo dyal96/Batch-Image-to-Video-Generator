@@ -5,6 +5,9 @@
 This is a **drag-and-drop batch script** to convert a sequence of images into a smooth, crossfaded video using FFmpeg — with full control over orientation, transitions, fit/stretch mode, frame duration, and frame rate.
 
 No software installation required — just FFmpeg and Windows.
+[ffmpeg ](https://www.ffmpeg.org/download.html)
+extra compression : [caesium](https://saerasoft.com/caesium/) / [caesiumclt](https://saerasoft.com/caesiumclt/) / [soruce-code](https://github.com/Lymphatus/caesium-clt)
+pdf to jpg process:[imagemagick](https://imagemagick.org/#gsc.tab=0) / [Ghostscript](https://ghostscript.com/)
 
 ---
 
